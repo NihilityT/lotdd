@@ -1,7 +1,15 @@
 #include "gmock/gmock.h"
 #include "Tweet.h"
+#include <string>
 
 using namespace ::testing;
+using namespace std;
+
+TEST(ATweet, DefaultsUserToNullWhenNotProvided) {
+   Tweet tweet("msg");
+
+   ASSERT_THAT(tweet.user(), Eq("@null"));
+}
 
 TEST(ATweet, IsEqualToAnotherWhenMessageAndUserAreEqual) {
    Tweet a("msg", "@user");
@@ -43,4 +51,23 @@ TEST(ATweet, CanBeCopyConstructed) {
    Tweet b(a);
 
    ASSERT_THAT(a, Eq(b));
+}
+
+TEST(ATweet, RequiresUserToStartWithAtSign) {
+   string invalidUser("notStartingWith@");
+   ASSERT_ANY_THROW(Tweet tweet("msg", invalidUser));
+}
+
+TEST(ATweet, RequiresUserToStartWithAnAtSign) {
+   string invalidUser("notStartingWith@");
+   ASSERT_THROW(Tweet tweet("msg", invalidUser), InvalidUserException);
+}
+
+TEST(ATweet, RequiresUserNameToStartWithAnAtSign) {
+   string invalidUser("notStartingWith@");
+   try {
+      Tweet tweet("msg", invalidUser);
+      FAIL();
+   } 
+   catch (const InvalidUserException& expected) {}
 }
