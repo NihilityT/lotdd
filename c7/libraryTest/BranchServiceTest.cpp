@@ -37,19 +37,10 @@ TEST_F(BranchServiceTest, AddReturnsGeneratedId)
 
 TEST_F(BranchServiceTest, AddGeneratesUniqueId)
 {
-   // Don't do this!
-   // Eliminate try/catch in tests that should
-   // not generate exceptions
-   
-   try
-   {
-      string id1 = service.Add("name1", "");
-      string id2 = service.Add("name2", "");
-      ASSERT_THAT(id1, Ne(id2));
-   }
-   catch (...) {
-      FAIL();
-   }
+   string id1 = service.Add("name1", "");
+   string id2 = service.Add("name2", "");
+
+   ASSERT_THAT(id1, Ne(id2));
 }
 
 TEST_F(BranchServiceTest, AddThrowsWhenNameNotUnique)
