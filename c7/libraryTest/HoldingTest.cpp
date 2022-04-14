@@ -228,7 +228,6 @@ TEST_F(ACheckedInHolding, UpdatesDateDueOnCheckout)
 {
    ASSERT_TRUE(IsAvailableAt(holding, *arbitraryBranch));
    holding->CheckOut(ArbitraryDate);
-
    ASSERT_THAT(holding->DueDate(),
       Eq(ArbitraryDate + date_duration(Book::BOOK_CHECKOUT_PERIOD)));
 }
