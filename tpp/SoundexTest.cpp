@@ -28,9 +28,15 @@ TEST(SoundexEncoding, IgnoresNonAlphabetics) {
    CHECK_EQUAL("F234", soundex.encode("F987654321%#.=+cdl"));
 }
 
-TEST(SoundexEncoding, CombinesDuplicateEncodings) {
+IGNORE_TEST(SoundexEncoding, CombinesDuplicateEncodings) {
    CHECK_EQUAL(soundex.codeFor('f'), soundex.codeFor('b'));
    CHECK_EQUAL(soundex.codeFor('g'), soundex.codeFor('c'));
    CHECK_EQUAL(soundex.codeFor('t'), soundex.codeFor('d'));
+
    CHECK_EQUAL("A123", soundex.encode("Abfcgdt"));
 }
+
+TEST(SoundexEncoding, LimitsLengthToFourCharacters) {
+   CHECK_EQUAL(4u, soundex.encode("Dcdlb").length());
+}
+
