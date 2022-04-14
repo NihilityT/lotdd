@@ -30,7 +30,7 @@ TEST_F(APortfolio, IsEmptyWhenCreated) {
 }
 
 TEST_F(APortfolio, IsNotEmptyAfterPurchase) {
-   portfolio_.Purchase(IBM, 1);
+   Purchase(IBM, 1);
 
    ASSERT_FALSE(portfolio_.IsEmpty());
 }
@@ -41,24 +41,23 @@ TEST_F(APortfolio, AnswersZeroForShareCountOfUnpurchasedSymbol) {
 
 TEST_F(APortfolio, AnswersShareCountForPurchasedSymbol) {
    portfolio_.Purchase(IBM, 2);
-
    ASSERT_THAT(portfolio_.ShareCount(IBM), Eq(2u));
 }
 
 TEST_F(APortfolio, ThrowsOnPurchaseOfZeroShares) {
-   ASSERT_THROW(portfolio_.Purchase(IBM, 0), InvalidPurchaseException);
+   ASSERT_THROW(Purchase(IBM, 0), InvalidPurchaseException);
 }
 
 TEST_F(APortfolio, AnswersShareCountForAppropriateSymbol) {
-   portfolio_.Purchase(IBM, 5);
-   portfolio_.Purchase(SAMSUNG, 10);
+   Purchase(IBM, 5);
+   Purchase(SAMSUNG, 10);
 
    ASSERT_THAT(portfolio_.ShareCount(IBM), Eq(5u));
 }
 
 TEST_F(APortfolio, ShareCountReflectsAccumulatedPurchasesOfSameSymbol) {
-   portfolio_.Purchase(IBM, 5);
-   portfolio_.Purchase(IBM, 15);
+   Purchase(IBM, 5);
+   Purchase(IBM, 15);
 
    ASSERT_THAT(portfolio_.ShareCount(IBM), Eq(5u + 15));
 }
@@ -66,16 +65,14 @@ TEST_F(APortfolio, ShareCountReflectsAccumulatedPurchasesOfSameSymbol) {
 
 TEST_F(APortfolio, ReducesShareCountOfSymbolOnSell)  {
    Purchase(SAMSUNG, 30);
-   
+  
    portfolio_.Sell(SAMSUNG, 13);
-
    ASSERT_THAT(portfolio_.ShareCount(SAMSUNG), Eq(30u - 13));
 }
 
 TEST_F(APortfolio, ThrowsWhenSellingMoreSharesThanPurchased) {
    ASSERT_THROW(portfolio_.Sell(SAMSUNG, 1), InvalidSellException);
 }
-
 
 TEST_F(APortfolio, AnswersThePurchaseRecordForASinglePurchase) {
    date dateOfPurchase(2014, Mar, 17);
