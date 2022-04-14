@@ -1,4 +1,5 @@
 #include "CppUTest/TestHarness.h"
+
 #include "WavReader.h"
 #include <iostream>
 #include <string>
@@ -28,7 +29,9 @@ TEST(WavReader_WriteSamples, WritesSingleSample) {
    uint32_t bytesPerSample { 1 };
    uint32_t startingSample { 0 };
    uint32_t samplesToWrite { 1 };
+
    reader.writeSamples(&out, data, startingSample, samplesToWrite, bytesPerSample);
+
    CHECK_EQUAL("a", out.str());
 }
 
@@ -39,6 +42,7 @@ TEST(WavReader_WriteSamples, WritesMultibyteSampleFromMiddle) {
    uint32_t samplesToWrite { 3 };
 
    reader.writeSamples(&out, data, startingSample, samplesToWrite, bytesPerSample);
+
    CHECK_EQUAL("89ABCD", out.str());
 }
 
