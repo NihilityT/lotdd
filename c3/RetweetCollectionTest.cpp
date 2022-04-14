@@ -9,6 +9,13 @@ public:
    RetweetCollection collection;
 };
 
+MATCHER_P(HasSize, expected, "") { 
+   return 
+      arg.size() == expected && 
+      arg.isEmpty() == (0 == expected); 
+}
+
+
 TEST_F(ARetweetCollection, IsEmptyWhenCreated) {
    ASSERT_TRUE(collection.isEmpty());
 }
@@ -31,12 +38,8 @@ TEST_F(ARetweetCollection, HasSizeOfOneAfterTweetAdded) {
 
 TEST_F(ARetweetCollection, DecreasesSizeAfterRemovingTweet) {
    collection.add(Tweet());
+   
    collection.remove(Tweet());
-   ASSERT_THAT(collection.size(), Eq(0u));
-}
-// AVOID doing this
-TEST_F(ARetweetCollection, IsEmptyAfterRemovingTweet) {
-   collection.add(Tweet());
-   collection.remove(Tweet());
-   ASSERT_TRUE(collection.isEmpty()); 
+
+   ASSERT_THAT(collection, HasSize(0u));
 }
