@@ -5,6 +5,7 @@
 #include <condition_variable>
 #include <mutex>
 #include <chrono>
+#include <vector>
 
 using namespace std;
 using std::chrono::milliseconds;
@@ -62,9 +63,17 @@ TEST_GROUP(AThreadPool_AddRequest) {
    ThreadPool pool;
    condition_variable wasExecuted;
    unsigned int count{0};
+   
+   vector<shared_ptr<thread>> threads;
+
    void setup() override {
       pool.start();
    }
+
+   void teardown() override {
+      for (auto& t: threads) t->join();
+   }
+   // ...
    
    void incrementCountAndNotify() {
       std::unique_lock<std::mutex> lock(m); 
@@ -80,12 +89,13 @@ TEST_GROUP(AThreadPool_AddRequest) {
             [&] { return expectedCount == count; }));
    }
 };
-
+// ...
 TEST(AThreadPool_AddRequest, PullsWorkInAThread) {
    Work work{[&] { incrementCountAndNotify(); }};
    unsigned int NumberOfWorkItems{1};
 
    pool.add(work);
+
    waitForCountAndFailOnTimeout(NumberOfWorkItems);
 }
 
@@ -97,4 +107,18 @@ TEST(AThreadPool_AddRequest, ExecutesAllWork) {
       pool.add(work);
 
    waitForCountAndFailOnTimeout(NumberOfWorkItems);
+}
+
+TEST(AThreadPool_AddRequest, HoldsUpUnderClientStress) {
+   Work work{[&] { incrementCountAndNotify(); }};
+   unsigned int NumberOfWorkItems{10};
+   unsigned int NumberOfThreads{10};
+
+   for (unsigned int i{0}; i < NumberOfThreads; i++)
+      threads.push_back(
+          make_shared<thread>([&] { 
+             for (unsigned int j{0}; j < NumberOfWorkItems; j++)
+               pool.add(work); 
+          }));
+   waitForCountAndFailOnTimeout(NumberOfThreads * NumberOfWorkItems);
 }
