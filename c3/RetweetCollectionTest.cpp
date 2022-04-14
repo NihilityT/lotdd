@@ -2,7 +2,10 @@
 #include "RetweetCollection.h"
 #include "Tweet.h"
 
+#include <memory>
+
 using namespace ::testing;
+using namespace std;
 
 class ARetweetCollection: public Test {
 public:
@@ -39,15 +42,11 @@ TEST_F(ARetweetCollection, IsNotEmptyWhenItsSizeIsNonZero) {
 class ARetweetCollectionWithOneTweet: public Test {
 public:
    RetweetCollection collection;
-   Tweet* tweet;
-   void SetUp() override {
-      tweet = new Tweet("msg", "@user");
-      collection.add(*tweet);
-   }
+   shared_ptr<Tweet> tweet;
 
-   void TearDown() override {
-      delete tweet;
-      tweet = nullptr;
+   void SetUp() override {
+      tweet = shared_ptr<Tweet>(new Tweet("msg", "@user"));
+      collection.add(*tweet);
    }
 };
 

@@ -8,6 +8,7 @@ set(CMAKE_CXX_FLAGS "${CMAXE_CXX_FLAGS} -Wall")
 
 set(sources 
    main.cpp 
+   ParameterizedTest.cpp
    RetweetCollectionTest.cpp 
    RetweetCollection.cpp
    TweetTest.cpp
