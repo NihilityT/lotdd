@@ -41,7 +41,11 @@ TEST(SoundexEncoding, CombinesMultipleDuplicateEncodings) {
 }
 
 TEST(SoundexEncoding, CombinesDuplicateCodesWhen2ndLetterDuplicates1st) {
-   CHECK_EQUAL("b230", soundex.encode("bbcd"));
+   CHECK_EQUAL("B230", soundex.encode("bbcd"));
+}
+
+TEST(SoundexEncoding, UppercasesFirstLetter) {
+   CHECK_EQUAL("A", soundex.encode("abcd").substr(0, 1));
 }
 
 TEST(SoundexEncoding, DoesNotCombineDuplicateEncodingsSeparatedByVowels) {
