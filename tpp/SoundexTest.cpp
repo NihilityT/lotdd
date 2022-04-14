@@ -48,6 +48,10 @@ TEST(SoundexEncoding, UppercasesFirstLetter) {
    CHECK_EQUAL("A", soundex.encode("abcd").substr(0, 1));
 }
 
+TEST(SoundexEncoding, IgnoresCaseWhenEncodingConsonants) {
+   CHECK_EQUAL(soundex.encode("BCDL"), soundex.encode("bcdl"));
+}
+
 TEST(SoundexEncoding, DoesNotCombineDuplicateEncodingsSeparatedByVowels) {
    CHECK_EQUAL("J110", soundex.encode("Jbob")); 
 }
