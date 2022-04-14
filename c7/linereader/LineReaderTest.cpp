@@ -55,9 +55,6 @@ static int WriteTemporaryFile(const char* records) {
 class LineReaderTest: public testing::Test {
 public:
    int fd;
-   void TearDown() {
-      close(fd);
-   }
 };
 
 //namespace {
@@ -87,10 +84,8 @@ TEST_F(LineReaderTest, OneLineTerminated) {
 
   ASSERT_FALSE(reader.GetNextLine(&line, &len));
 }
-
 TEST_F(LineReaderTest, OneLine) {
-  fd = WriteTemporaryFile("a");
-  LineReader reader(fd);
+  LineReader reader(WriteTemporaryFile("a"));
 
   const char *line;
   unsigned len;
