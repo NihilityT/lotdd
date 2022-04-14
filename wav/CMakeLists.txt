@@ -6,6 +6,7 @@ link_directories($ENV{RLOG_HOME}/rlog/.libs $ENV{CPPUTEST_HOME}/lib)
 set(Boost_USE_STATIC_LIBS ON)
 
 add_subdirectory(rlog)
+
 add_definitions(-std=c++0x)
 
 set(CMAKE_CXX_FLAGS "${CMAXE_CXX_FLAGS} -DRLOG_COMPONENT=debug -Wall")
