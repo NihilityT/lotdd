@@ -16,8 +16,8 @@ public:
    void Purchase(
          const string& symbol, 
          unsigned int shareCount,
-         const date& transactionDate=APortfolio::ArbitraryDate) {
-      portfolio_.Purchase(symbol, shareCount, transactionDate);
+         const date& date=APortfolio::ArbitraryDate) {
+      portfolio_.Purchase(symbol, shareCount, date);
    }
 
    void Sell(
@@ -28,9 +28,9 @@ public:
    }
 
    void ASSERT_PURCHASE(
-         PurchaseRecord& purchase, int shareCount, const date& date) {
+         PurchaseRecord& purchase, int shareCount, const date& transactionDate) {
       ASSERT_THAT(purchase.ShareCount, Eq(shareCount));
-      ASSERT_THAT(purchase.Date, Eq(date));
+      ASSERT_THAT(purchase.Date, Eq(transactionDate));
    }
 };
 
@@ -59,8 +59,9 @@ TEST_F(APortfolio, AnswersShareCountForPurchasedSymbol) {
 }
 
 TEST_F(APortfolio, ThrowsOnPurchaseOfZeroShares) {
-   ASSERT_THROW(Purchase(IBM, 0), InvalidPurchaseException);
+   ASSERT_THROW(Purchase(IBM, 0), ShareCountCannotBeZeroException);
 }
+// ...
 
 TEST_F(APortfolio, AnswersShareCountForAppropriateSymbol) {
    Purchase(IBM, 5);
@@ -92,6 +93,7 @@ TEST_F(APortfolio, AnswersThePurchaseRecordForASinglePurchase) {
    Purchase(SAMSUNG, 5, ArbitraryDate);
 
    auto purchases = portfolio_.Purchases(SAMSUNG);
+
    ASSERT_PURCHASE(purchases[0], 5, ArbitraryDate);
 }
 
@@ -100,5 +102,10 @@ TEST_F(APortfolio, IncludesSalesInPurchaseRecords) {
    Sell(SAMSUNG, 5, ArbitraryDate);
 
    auto sales = portfolio_.Purchases(SAMSUNG);
+
    ASSERT_PURCHASE(sales[1], -5, ArbitraryDate);
+}
+
+TEST_F(APortfolio, ThrowsOnSellOfZeroShares) {
+   ASSERT_THROW(Sell(IBM, 0), ShareCountCannotBeZeroException);
 }
