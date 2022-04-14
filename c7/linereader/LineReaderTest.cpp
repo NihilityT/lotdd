@@ -58,12 +58,16 @@ public:
    const char *line;
    unsigned len;
 
+   static const char* ArbitraryText;
+
    void ASSERT_EQ_WITH_LENGTH(
          const char* expected, const char* actual, unsigned length) {
       ASSERT_EQ(length, strlen(actual));
       ASSERT_STREQ(expected, actual);
    }
 };
+
+const char* LineReaderTest::ArbitraryText("a");
 
 class GetNextLinefromLineReader: public LineReaderTest {
 };
@@ -94,13 +98,17 @@ TEST_F(LineReaderTest, OneLineTerminated) {
 
 TEST_F(GetNextLinefromLineReader, UpdatesLineAndLenOnRead) {
   LineReader reader(WriteTemporaryFile("a"));
+
   reader.GetNextLine(&line, &len);
+
   ASSERT_EQ_WITH_LENGTH("a", line, len);
 }
 
 TEST_F(GetNextLinefromLineReader, AnswersTrueWhenLineAvailable) {
-  LineReader reader(WriteTemporaryFile("a"));
+  LineReader reader(WriteTemporaryFile(ArbitraryText));
+
   bool wasLineRead = reader.GetNextLine(&line, &len);
+
   ASSERT_TRUE(wasLineRead);
 }
 
@@ -108,7 +116,9 @@ TEST_F(GetNextLinefromLineReader, AnswersFalseWhenAtEOF) {
   LineReader reader(WriteTemporaryFile("a"));
   reader.GetNextLine(&line, &len);
   reader.PopLine(len);
+
   bool wasLineRead = reader.GetNextLine(&line, &len);
+
   ASSERT_FALSE(wasLineRead);
 }
 
