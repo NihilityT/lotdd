@@ -4,7 +4,7 @@
 #include "GeoServer.h"
 #include "VectorUtil.h"
 #include "TestTimer.h"
-// ...
+
 using namespace std;
 
 TEST_GROUP(AGeoServer) {
@@ -82,6 +82,12 @@ TEST_GROUP(AGeoServer_UsersInBox) {
 
    Location aUserLocation { 38, -103 };
 
+   class GeoServerUserTrackingListener: public GeoServerListener {
+   public:
+      void updated(const User& user) { Users.push_back(user); }
+      vector<User> Users;
+   } trackingListener;
+
    void setup() override {
       server.track(aUser);
       server.track(bUser);
@@ -96,12 +102,6 @@ TEST_GROUP(AGeoServer_UsersInBox) {
 };
 
 TEST(AGeoServer_UsersInBox, AnswersUsersInSpecifiedRange) {
-   class GeoServerUserTrackingListener: public GeoServerListener {
-   public:
-      void updated(const User& user) { Users.push_back(user); }
-      vector<User> Users;
-   } trackingListener;
-
    server.updateLocation(
       bUser, Location{aUserLocation.go(Width / 2 - TenMeters, East)}); 
 
@@ -116,9 +116,9 @@ TEST(AGeoServer_UsersInBox, AnswersOnlyUsersWithinSpecifiedRange) {
    server.updateLocation(
       cUser, Location{aUserLocation.go(Width / 2 - TenMeters, East)}); 
 
-   auto users = server.usersInBox(aUser, Width, Height);
+   server.usersInBox(aUser, Width, Height, &trackingListener);
 
-   CHECK_EQUAL(vector<string> { cUser }, UserNames(users));
+   CHECK_EQUAL(vector<string> { cUser }, UserNames(trackingListener.Users));
 }
 
 IGNORE_TEST(AGeoServer_UsersInBox, HandlesLargeNumbersOfUsers) {
@@ -131,8 +131,8 @@ IGNORE_TEST(AGeoServer_UsersInBox, HandlesLargeNumbersOfUsers) {
    }
 
    TestTimer timer;
-   auto users = server.usersInBox(aUser, Width, Height);
+   server.usersInBox(aUser, Width, Height, &trackingListener);
 
-   LONGS_EQUAL(lots, users.size());
+   LONGS_EQUAL(lots, trackingListener.Users.size());
 }
 
