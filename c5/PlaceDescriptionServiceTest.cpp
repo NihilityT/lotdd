@@ -25,11 +25,14 @@ class HttpStub: public Http {
          "state":"CO",
          "country":"US" }})";
    }
+
    void verify(const string& url) const {
-      auto expectedArgs(
+      string urlStart(
+         "http://open.mapquestapi.com/nominatim/v1/reverse?format=json&");
+      string expected(urlStart + 
          "lat=" + APlaceDescriptionService::ValidLatitude + "&" +
          "lon=" + APlaceDescriptionService::ValidLongitude);
-         ASSERT_THAT(url, EndsWith(expectedArgs));
+      ASSERT_THAT(url, Eq(expected));
    }
 };
 
