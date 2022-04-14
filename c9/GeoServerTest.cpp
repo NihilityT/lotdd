@@ -27,6 +27,8 @@ TEST_GROUP(AGeoServer) {
 };
 
 TEST(AGeoServer, AnswersUnknownLocationWhenUserNoLongerTracked) {
+   server.stopTracking(aUser);
+
    CHECK_TRUE(locationIsUnknown(aUser));
 }
 
