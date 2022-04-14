@@ -30,20 +30,25 @@ private:
       return word.substr(1);
    }
 
+   const std::string NotADigit{"*"};
+
    std::string encodedDigits(const std::string& word) const {
       std::string encoding;
       for (auto letter: word) {
          if (isComplete(encoding)) break;
-         if (encodedDigit(letter) != lastDigit(encoding))
-            encoding += encodedDigit(letter);
+
+         auto digit = encodedDigit(letter);
+         if (digit != NotADigit && digit != lastDigit(encoding))
+            encoding += digit;
       }
       return encoding;
    }
 
    std::string lastDigit(const std::string& encoding) const {
-      if (encoding.empty()) return "";
+      if (encoding.empty()) return NotADigit;
       return std::string(1, encoding.back());
    }
+   // ...
 
    bool isComplete (const std::string& encoding) const {
       return encoding.length() == MaxCodeLength - 1; 
@@ -53,6 +58,7 @@ public:
    std::string encodedDigit(char letter) const {
       const std::unordered_map<char, std::string> encodings {
          {'b', "1"}, {'f', "1"}, {'p', "1"}, {'v', "1"},
+         // ...
          {'c', "2"}, {'g', "2"}, {'j', "2"}, {'k', "2"}, {'q', "2"},
                      {'s', "2"}, {'x', "2"}, {'z', "2"},
          {'d', "3"}, {'t', "3"},
@@ -61,7 +67,7 @@ public:
          {'r', "6"}
       };
       auto it = encodings.find(letter);
-      return it == encodings.end() ? "" : it->second;
+      return it == encodings.end() ? NotADigit : it->second;
    }
 
 private:
