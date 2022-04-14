@@ -14,11 +14,13 @@
 #include <thread>
 #include <memory>
 #include <atomic>
+#include <mutex>
 
 #include "Work.h"
 
 class ThreadPool {
 public:
+   // ...
    virtual ~ThreadPool() {
       stop();
    }
@@ -34,18 +36,23 @@ public:
    }
 
    bool hasWork() {
+      std::lock_guard<std::mutex> block(mutex_);
       return !workQueue_.empty();
    }
 
    void add(Work work) {
+      std::lock_guard<std::mutex> block(mutex_);
       workQueue_.push_front(work); 
    }
 
    Work pullWork() {
+      std::lock_guard<std::mutex> block(mutex_);
+
       auto work = workQueue_.back();
       workQueue_.pop_back();
       return work;
    }
+   // ...
 
 private:
    void worker() {
@@ -60,6 +67,7 @@ private:
    std::atomic<bool> done_{false};
    std::deque<Work> workQueue_;
    std::shared_ptr<std::thread> workThread_;
+   std::mutex mutex_;
 };
 
 #endif

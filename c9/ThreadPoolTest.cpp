@@ -63,7 +63,6 @@ TEST_GROUP(AThreadPool_AddRequest) {
    ThreadPool pool;
    condition_variable wasExecuted;
    unsigned int count{0};
-   
    vector<shared_ptr<thread>> threads;
 
    void setup() override {
@@ -120,5 +119,6 @@ TEST(AThreadPool_AddRequest, HoldsUpUnderClientStress) {
              for (unsigned int j{0}; j < NumberOfWorkItems; j++)
                pool.add(work); 
           }));
+
    waitForCountAndFailOnTimeout(NumberOfThreads * NumberOfWorkItems);
 }
