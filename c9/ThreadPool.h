@@ -19,9 +19,11 @@
 
 #include "Work.h"
 
+
+#include <iostream>
+
 class ThreadPool {
 public:
-   // ...
    virtual ~ThreadPool() {
       stop();
    }
@@ -35,14 +37,13 @@ public:
       for (unsigned int i{0u}; i < numberOfThreads; i++)
          threads_.push_back(std::thread(&ThreadPool::worker, this));
    }
-   // ...
 
    bool hasWork() {
       std::lock_guard<std::mutex> block(mutex_);
       return !workQueue_.empty();
    }
 
-   void add(Work work) {
+   virtual void add(Work work) {
       std::lock_guard<std::mutex> block(mutex_);
       workQueue_.push_front(work); 
    }
@@ -58,7 +59,6 @@ public:
    }
 
 private:
-   // ...
    void worker() {
       while (!done_) {
          while (!done_ && !hasWork()) 
