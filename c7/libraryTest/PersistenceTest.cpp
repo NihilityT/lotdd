@@ -40,8 +40,7 @@ TEST_P(PersistenceTest, AddedItemCanBeRetrievedById)
 
     auto found = persister->Get("1");
 
-    ASSERT_THAT(found, NotNull());
-    ASSERT_THAT(*found, Eq(*objectWithId1));
+    ASSERT_THAT(found, Pointee(*objectWithId1));
 }
 
 TEST_P(PersistenceTest, GetAnswersNullWhenNoMatchingEntries)

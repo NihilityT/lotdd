@@ -30,24 +30,33 @@ public:
 
 TEST_F(BranchServiceTest, AddReturnsGeneratedId)
 {
-    string id = service.Add("newname", "address");
+   string id = service.Add("newname", "address");
 
-    ASSERT_THAT(id, Gt("0"));
+   ASSERT_THAT(id, Gt("0"));
 }
 
 TEST_F(BranchServiceTest, AddGeneratesUniqueId)
 {
-    string id1 = service.Add("newname1", "address");
-    string id2 = service.Add("newname2", "address");
-
-    ASSERT_THAT(id1, Ne(id2));
+   // Don't do this!
+   // Eliminate try/catch in tests that should
+   // not generate exceptions
+   
+   try
+   {
+      string id1 = service.Add("name1", "");
+      string id2 = service.Add("name2", "");
+      ASSERT_THAT(id1, Ne(id2));
+   }
+   catch (...) {
+      FAIL();
+   }
 }
 
 TEST_F(BranchServiceTest, AddThrowsWhenNameNotUnique)
 {
-    service.Add("samename", "address1");
+   service.Add("samename", "");
 
-    ASSERT_THROW(service.Add("samename", "address2"), DuplicateBranchNameException);
+   ASSERT_THROW(service.Add("samename", ""), DuplicateBranchNameException);
 }
 
 TEST_F(BranchServiceTest, CountInitiallyZero)
