@@ -30,6 +30,7 @@ public:
       encode(tail(word), code);
       return zeroPad(code);
    }
+
    void encode(const std::string& word, std::string& code) const {
       if (word.empty()) return;
       code += codeFor(head(word));
