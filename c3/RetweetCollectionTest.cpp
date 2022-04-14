@@ -23,24 +23,6 @@ TEST_F(ARetweetCollection, HasSizeZeroWhenCreated) {
    ASSERT_THAT(collection.size(), Eq(0u));
 }
 
-TEST_F(ARetweetCollection, IsNoLongerEmptyAfterTweetAdded) {
-   collection.add(Tweet());
-   ASSERT_FALSE(collection.isEmpty());
-}
-
-TEST_F(ARetweetCollection, HasSizeOfOneAfterTweetAdded) {
-   collection.add(Tweet());
-   ASSERT_THAT(collection.size(), Eq(1u));
-}
-
-TEST_F(ARetweetCollection, DISABLED_DecreasesSizeAfterRemovingTweet) {
-   collection.add(Tweet());
-   
-   collection.remove(Tweet());
-
-   ASSERT_THAT(collection, HasSize(0u));
-}
-
 TEST_F(ARetweetCollection, IsEmptyWhenItsSizeIsZero) {
    ASSERT_THAT(collection.size(), Eq(0u));
 
@@ -54,14 +36,20 @@ TEST_F(ARetweetCollection, IsNotEmptyWhenItsSizeIsNonZero) {
    ASSERT_FALSE(collection.isEmpty());
 }
 
-TEST_F(ARetweetCollection, IncrementsSizeWhenTweetAdded) {
-   unsigned int expectedTweetCount(2);
-   Tweet first("msg1", "@user");
-   Tweet second("msg2", "@user");
-   collection.add(first);
-   collection.add(second);
-   unsigned int size = collection.size();
-   ASSERT_THAT(size, Eq(expectedTweetCount));
+class ARetweetCollectionWithOneTweet: public Test {
+public:
+   RetweetCollection collection;
+   void SetUp() override {
+      collection.add(Tweet());
+   }
+};
+
+TEST_F(ARetweetCollectionWithOneTweet, IsNoLongerEmpty) {
+   ASSERT_FALSE(collection.isEmpty());
+}
+
+TEST_F(ARetweetCollectionWithOneTweet, HasSizeOfOne) {
+   ASSERT_THAT(collection.size(), Eq(1u));
 }
 
 TEST_F(ARetweetCollection, IgnoresDuplicateTweetAdded) {
@@ -69,6 +57,7 @@ TEST_F(ARetweetCollection, IgnoresDuplicateTweetAdded) {
    Tweet duplicate(tweet);
    collection.add(tweet);
    collection.add(duplicate);
+
    ASSERT_THAT(collection.size(), Eq(1u));
 }
 
