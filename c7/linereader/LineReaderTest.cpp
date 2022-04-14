@@ -55,7 +55,10 @@ static int WriteTemporaryFile(const char* records) {
 class LineReaderTest: public testing::Test {
 public:
    int fd;
+   const char *line;
+   unsigned len;
 };
+
 
 //namespace {
 //typedef testing::Test LineReaderTest;
@@ -87,8 +90,6 @@ TEST_F(LineReaderTest, OneLineTerminated) {
 TEST_F(LineReaderTest, OneLine) {
   LineReader reader(WriteTemporaryFile("a"));
 
-  const char *line;
-  unsigned len;
   ASSERT_TRUE(reader.GetNextLine(&line, &len));
   ASSERT_EQ(len, (unsigned)1);
   ASSERT_EQ(line[0], 'a');
