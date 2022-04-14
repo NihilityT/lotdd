@@ -15,7 +15,6 @@ MATCHER_P(HasSize, expected, "") {
       arg.isEmpty() == (0 == expected); 
 }
 
-
 TEST_F(ARetweetCollection, IsEmptyWhenCreated) {
    ASSERT_TRUE(collection.isEmpty());
 }
@@ -42,4 +41,17 @@ TEST_F(ARetweetCollection, DecreasesSizeAfterRemovingTweet) {
    collection.remove(Tweet());
 
    ASSERT_THAT(collection, HasSize(0u));
+}
+
+TEST_F(ARetweetCollection, IsEmptyWhenItsSizeIsZero) {
+   ASSERT_THAT(collection.size(), Eq(0u));
+
+   ASSERT_TRUE(collection.isEmpty());
+}
+
+TEST_F(ARetweetCollection, IsNotEmptyWhenItsSizeIsNonZero) {
+   collection.add(Tweet());
+   ASSERT_THAT(collection.size(), Gt(0u));
+
+   ASSERT_FALSE(collection.isEmpty());
 }
