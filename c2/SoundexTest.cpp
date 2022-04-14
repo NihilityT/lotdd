@@ -1,7 +1,5 @@
 #include "gmock/gmock.h" 
-
 #include "Soundex.h"
-
 using namespace testing;
 
 class SoundexEncoding: public Test {
@@ -60,3 +58,4 @@ TEST_F(SoundexEncoding, CombinesDuplicateCodesWhen2ndLetterDuplicates1st) {
 TEST_F(SoundexEncoding, DoesNotCombineDuplicateEncodingsSeparatedByVowels) {
    ASSERT_THAT(soundex.encode("Jbob"), Eq("J110"));
 }
+
