@@ -28,6 +28,7 @@ TEST_F(APlaceDescriptionService, MakesHttpRequestToObtainAddress) {
    auto expectedURL = urlStart + 
       "lat=" + APlaceDescriptionService::ValidLatitude + "&" +
       "lon=" + APlaceDescriptionService::ValidLongitude;
+   EXPECT_CALL(httpStub, initialize());
    EXPECT_CALL(httpStub, get(expectedURL));
    PlaceDescriptionService service{&httpStub};
 
