@@ -31,9 +31,12 @@ TEST_F(ARetweetCollection, HasSizeOfOneAfterTweetAdded) {
 
 TEST_F(ARetweetCollection, DecreasesSizeAfterRemovingTweet) {
    collection.add(Tweet());
-   
    collection.remove(Tweet());
-
    ASSERT_THAT(collection.size(), Eq(0u));
-   ASSERT_TRUE(collection.isEmpty()); // DON'T DO THIS
+}
+// AVOID doing this
+TEST_F(ARetweetCollection, IsEmptyAfterRemovingTweet) {
+   collection.add(Tweet());
+   collection.remove(Tweet());
+   ASSERT_TRUE(collection.isEmpty()); 
 }
