@@ -10,15 +10,20 @@ set(CMAKE_CXX_FLAGS "${CMAXE_CXX_FLAGS} -Wall")
 set(sources 
    Area.cpp
    GeoServer.cpp
-   Location.cpp)
+   Location.cpp
+   )
 set(testSources 
    AreaTest.cpp
    CppUTestExtensions.cpp
    CppUTestExtensionsTest.cpp
    GeoServerTest.cpp
    LocationTest.cpp
-   TestTimer.cpp)
+   TestTimer.cpp
+   ThreadPoolTest.cpp
+   WorkTest.cpp)
 add_executable(utest testmain.cpp ${testSources} ${sources})
 
 target_link_libraries(utest CppUTest)
+target_link_libraries(utest pthread)
+
 
