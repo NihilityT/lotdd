@@ -18,7 +18,7 @@
 class ShareCountCannotBeZeroException: public std::exception {
 };
 
-class InsufficientSharesException: public std::exception {
+class InvalidSellException: public std::exception {
 };
 
 struct PurchaseRecord {
@@ -46,7 +46,11 @@ public:
 private:
    void Transact(const std::string& symbol, 
          int shareChange,
-         const boost::gregorian::date& date);
+         const boost::gregorian::date&);
+   void UpdateShareCount(const std::string& symbol, int shareChange);
+   void AddPurchaseRecord(int, const boost::gregorian::date&);
+   void ThrowIfShareCountIsZero(int shareChange) const;
+
    std::unordered_map<std::string, unsigned int> holdings_;
    std::vector<PurchaseRecord> purchases_;
 };
