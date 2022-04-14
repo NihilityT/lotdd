@@ -1,6 +1,5 @@
 #include "Portfolio.h"
 #include "PurchaseRecord.h"
-
 using namespace std;
 using namespace boost::gregorian;
 
@@ -9,12 +8,16 @@ bool Portfolio::IsEmpty() const {
 }
 
 void Portfolio::Purchase(
-      const string& symbol, unsigned int shareCount, const date& transactionDate) {
+      const string& symbol, 
+      unsigned int shareCount, 
+      const date& transactionDate) {
    Transact(symbol, shareCount, transactionDate);
 }
 
 void Portfolio::Sell(
-      const string& symbol, unsigned int shareCount, const date& transactionDate) {
+      const string& symbol, 
+      unsigned int shareCount, 
+      const date& transactionDate) {
    if (shareCount > ShareCount(symbol)) throw InvalidSellException();
    Transact(symbol, -shareCount, transactionDate);
 }
@@ -36,19 +39,26 @@ void Portfolio::UpdateShareCount(const string& symbol, int shareChange) {
 
 void Portfolio::AddPurchaseRecord(
       const string& symbol, int shareChange, const date& date) {
-   purchases_.push_back(PurchaseRecord(shareChange, date));
-   auto it = purchaseRecords_.find(symbol);
-   if (it == purchaseRecords_.end())
-      purchaseRecords_[symbol] = vector<PurchaseRecord>();
-   purchaseRecords_[symbol].push_back(PurchaseRecord(shareChange, date));
+   if (!ContainsSymbol(symbol))
+      InitializePurchaseRecords(symbol);
+   Add(symbol, {shareChange, date});
+}
+
+void Portfolio::InitializePurchaseRecords(const string& symbol) {
+   purchaseRecords_[symbol] = vector<PurchaseRecord>();
+}
+void Portfolio::Add(const string& symbol, PurchaseRecord&& record) {
+   purchaseRecords_[symbol].push_back(record);
+}
+
+bool Portfolio::ContainsSymbol(const string& symbol) const {
+   return purchaseRecords_.find(symbol) != purchaseRecords_.end();
 }
 
 unsigned int Portfolio::ShareCount(const string& symbol) const {
-   auto it = holdings_.find(symbol);
-   if (it == holdings_.end()) return 0;
-   return it->second;
+   return Find<unsigned int>(holdings_, symbol);
 }
+
 vector<PurchaseRecord> Portfolio::Purchases(const string& symbol) const {
-//   return purchases_;
-   return purchaseRecords_.find(symbol)->second;
+   return Find<vector<PurchaseRecord>>(purchaseRecords_, symbol);
 }

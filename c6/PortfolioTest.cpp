@@ -118,6 +118,22 @@ TEST_F(APortfolio, SeparatesPurchaseRecordsBySymbol) {
    Purchase(IBM, 1, ArbitraryDate);
 
    auto sales = portfolio_.Purchases(SAMSUNG);
+
    ASSERT_THAT(sales, ElementsAre(PurchaseRecord(5, ArbitraryDate)));
 }
 
+TEST_F(APortfolio, AnswersEmptyPurchaseRecordVectorWhenSymbolNotFound) {
+   ASSERT_THAT(portfolio_.Purchases(SAMSUNG), Eq(vector<PurchaseRecord>()));
+}
+
+TEST_F(APortfolio, SupportsMultiplePurchaseRecordsOfSymbol) {
+   Purchase(SAMSUNG, 4, ArbitraryDate);
+   Purchase(SAMSUNG, 11, ArbitraryDate);
+
+   auto sales = portfolio_.Purchases(SAMSUNG);
+
+   ASSERT_THAT(sales, ElementsAre(
+            PurchaseRecord(4, ArbitraryDate),
+            PurchaseRecord(11, ArbitraryDate)
+            ));
+}
