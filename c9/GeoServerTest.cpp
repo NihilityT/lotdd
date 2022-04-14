@@ -181,12 +181,10 @@ TEST_GROUP_BASE(AGeoServer_ScaleTests, GeoServerUsersInBoxTests) {
          CHECK_TRUE(wasExecuted_.wait_for(lock, time, [&] 
                   { return expectedCount == Count; }));
       }
-
       condition_variable wasExecuted_;
       unsigned int Count{0};
       mutex mutex_;
    };
-
    GeoServerCountingListener countingListener;
    shared_ptr<thread> t;
 
