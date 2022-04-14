@@ -20,10 +20,15 @@
 class ThreadPool {
 public:
    virtual ~ThreadPool() {
+      stop();
+   }
+
+   void stop() {
       done_ = true;
       if (workThread_)
          workThread_->join();
    }
+
    void start() {
       workThread_ = std::make_shared<std::thread>(&ThreadPool::worker, this);
    }
