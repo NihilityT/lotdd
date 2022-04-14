@@ -11,8 +11,17 @@ public:
    static const string IBM;
    static const string SAMSUNG;
    Portfolio portfolio_;
+   static const date ArbitraryDate;
+
+   void Purchase(
+         const string& symbol, 
+         unsigned int shareCount,
+         const date& transactionDate=APortfolio::ArbitraryDate) {
+      portfolio_.Purchase(symbol, shareCount, transactionDate);
+   }
 };
 
+const date APortfolio::ArbitraryDate(2014, Sep, 5);
 const string APortfolio::IBM("IBM");
 const string APortfolio::SAMSUNG("SSNLF");
 
@@ -54,8 +63,9 @@ TEST_F(APortfolio, ShareCountReflectsAccumulatedPurchasesOfSameSymbol) {
    ASSERT_THAT(portfolio_.ShareCount(IBM), Eq(5u + 15));
 }
 
+
 TEST_F(APortfolio, ReducesShareCountOfSymbolOnSell)  {
-   portfolio_.Purchase(SAMSUNG, 30);
+   Purchase(SAMSUNG, 30);
    
    portfolio_.Sell(SAMSUNG, 13);
 
@@ -66,9 +76,10 @@ TEST_F(APortfolio, ThrowsWhenSellingMoreSharesThanPurchased) {
    ASSERT_THROW(portfolio_.Sell(SAMSUNG, 1), InvalidSellException);
 }
 
+
 TEST_F(APortfolio, AnswersThePurchaseRecordForASinglePurchase) {
    date dateOfPurchase(2014, Mar, 17);
-   portfolio_.Purchase(SAMSUNG, 5, dateOfPurchase);
+   Purchase(SAMSUNG, 5, dateOfPurchase);
 
    auto purchases = portfolio_.Purchases(SAMSUNG);
 

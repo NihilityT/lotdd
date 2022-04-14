@@ -12,7 +12,6 @@ bool Portfolio::IsEmpty() const {
 void Portfolio::Purchase(
       const string& symbol, unsigned int shareCount, const date& transactionDate) {
    if (0 == shareCount) throw InvalidPurchaseException();
-   
    holdings_[symbol] = shareCount + ShareCount(symbol);
    purchases_.push_back(PurchaseRecord(shareCount, transactionDate));
 }
@@ -31,4 +30,3 @@ unsigned int Portfolio::ShareCount(const string& symbol) const {
 vector<PurchaseRecord> Portfolio::Purchases(const string& symbol) const {
    return purchases_;
 }
-

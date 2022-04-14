@@ -36,11 +36,9 @@ public:
    bool IsEmpty() const;
    void Purchase(
          const std::string& symbol, 
-		 
          unsigned int shareCount,
-		 
-         const boost::gregorian::date& transactionDate=
-            Portfolio::FIXED_PURCHASE_DATE);
+         const boost::gregorian::date& transactionDate
+            =Portfolio::FIXED_PURCHASE_DATE);
    void Sell(const std::string& symbol, unsigned int shareCount);
    unsigned int ShareCount(const std::string& symbol) const;
    std::vector<PurchaseRecord> Purchases(const std::string& symbol) const;
