@@ -10,7 +10,9 @@ string convert(unsigned int arabic)
 {
    const auto arabicToRomanConversions = {
       make_pair(10u, "X"), 
+      make_pair(5u, "V"), 
       make_pair(1u, "I") };
+
    string roman{""};
    for (auto arabicToRoman: arabicToRomanConversions) 
       while (arabic >= arabicToRoman.first)
@@ -25,6 +27,7 @@ TEST(RomanConverter, CanConvertPositiveDigits) {
    EXPECT_THAT(convert(1), Eq("I"));
    EXPECT_THAT(convert(2), Eq("II"));
    EXPECT_THAT(convert(3), Eq("III"));
+   EXPECT_THAT(convert(5), Eq("V"));
    EXPECT_THAT(convert(10), Eq("X"));
    EXPECT_THAT(convert(11), Eq("XI"));
    EXPECT_THAT(convert(12), Eq("XII"));
