@@ -28,7 +28,7 @@ TEST(SoundexEncoding, IgnoresNonAlphabetics) {
    CHECK_EQUAL("F234", soundex.encode("F987654321%#.=+cdl"));
 }
 
-IGNORE_TEST(SoundexEncoding, CombinesDuplicateEncodings) {
+TEST(SoundexEncoding, CombinesDuplicateEncodings) {
    CHECK_EQUAL(soundex.codeFor('f'), soundex.codeFor('b'));
    CHECK_EQUAL(soundex.codeFor('g'), soundex.codeFor('c'));
    CHECK_EQUAL(soundex.codeFor('t'), soundex.codeFor('d'));
