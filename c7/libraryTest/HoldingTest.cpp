@@ -49,11 +49,28 @@ public:
     }
 };
 
+class AHolding: public HoldingTest
+{
+};
+
 const date HoldingTest::ArbitraryDate(2013, Jan, 1);
 
 TEST_F(HoldingTest, BarcodeRequiresColon)
 {
     ASSERT_THROW(Holding("A"), InvalidBarcodeException);
+}
+
+TEST_F(AHolding, CanBeCreatedFromAnother) 
+{
+   Holding holding(THE_TRIAL_CLASSIFICATION, 1);
+   holding.Transfer(EAST_BRANCH);
+
+   Holding copy(holding, 2);
+
+   ASSERT_THAT(copy.Classification(), Eq(THE_TRIAL_CLASSIFICATION));
+   ASSERT_THAT(copy.CopyNumber(), Eq(2));
+   ASSERT_THAT(copy.CurrentBranch(), Eq(EAST_BRANCH));
+   ASSERT_TRUE(copy.LastCheckedOutOn().is_not_a_date());
 }
 
 TEST_F(HoldingTest, CanExtractClassificationWhenCreatedWithBarcode)
@@ -197,6 +214,25 @@ TEST_F(HoldingTest, Availability)
    EXPECT_TRUE(holding->IsAvailable());
 }
 
+TEST_F(AHolding, IsNotAvailableAfterCheckout)
+{
+   holding->Transfer(EAST_BRANCH);
+
+   holding->CheckOut(ArbitraryDate);
+
+   EXPECT_THAT(holding->IsAvailable(), Eq(false));
+}
+
+TEST_F(AHolding, IsAvailableAfterCheckin)
+{
+   holding->Transfer(EAST_BRANCH);
+   holding->CheckOut(ArbitraryDate);
+
+   holding->CheckIn(ArbitraryDate + date_duration(1), EAST_BRANCH);
+
+   EXPECT_THAT(holding->IsAvailable(), Eq(true));
+}
+
 TEST_F(HoldingTest, UnavailableOnCheckout)
 {
     MakeAvailableAtABranch(holding);
@@ -228,6 +264,7 @@ TEST_F(ACheckedInHolding, UpdatesDateDueOnCheckout)
 {
    ASSERT_TRUE(IsAvailableAt(holding, *arbitraryBranch));
    holding->CheckOut(ArbitraryDate);
+
    ASSERT_THAT(holding->DueDate(),
       Eq(ArbitraryDate + date_duration(Book::BOOK_CHECKOUT_PERIOD)));
 }
