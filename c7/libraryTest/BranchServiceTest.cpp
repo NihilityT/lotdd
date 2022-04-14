@@ -78,7 +78,7 @@ TEST_F(BranchServiceTest, DeleteAllSetsCountToZero)
 
 TEST_F(BranchServiceTest, FindAnswersFalseForNonexistentBranch)
 {
-    ASSERT_FALSE(service.Find(*eastBranch));
+   ASSERT_FALSE(service.Find(*eastBranch));
 }
 
 TEST_F(BranchServiceTest, FindAnswersTrueForAddedBranch)
@@ -98,13 +98,16 @@ TEST_F(BranchServiceTest, FindRetrievesById)
     ASSERT_THAT(retrieved.Name(), Eq(eastBranch->Name()));
 }
 
+// test that adding a branch increments the count
 TEST_F(BranchServiceTest, AddBranchIncrementsCount)
 {
-    service.Add(*eastBranch);
-    ASSERT_THAT(service.BranchCount(), Eq(1));
+   // first branch
+   service.Add(*eastBranch); // East
+   ASSERT_THAT(service.BranchCount(), Eq(1));
 
-    service.Add(*westBranch);
-    ASSERT_THAT(service.BranchCount(), Eq(2));
+   // second branch
+   service.Add(*westBranch); // West
+   ASSERT_THAT(service.BranchCount(), Eq(2)); // count now 2
 }
 
 TEST_F(BranchServiceTest, PersistsAcrossServiceInstances)
