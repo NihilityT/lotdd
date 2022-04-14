@@ -3,8 +3,6 @@
 using namespace std;
 using namespace boost::gregorian;
 
-const date Portfolio::FIXED_PURCHASE_DATE(date(2014, Jan, 1));
-
 bool Portfolio::IsEmpty() const { 
    return 0 == holdings_.size(); 
 }
@@ -16,9 +14,11 @@ void Portfolio::Purchase(
    purchases_.push_back(PurchaseRecord(shareCount, transactionDate));
 }
 
-void Portfolio::Sell(const string& symbol, unsigned int shareCount) {
+void Portfolio::Sell(
+      const string& symbol, unsigned int shareCount, const date& transactionDate) {
    if (shareCount > ShareCount(symbol)) throw InvalidSellException();
    holdings_[symbol] = ShareCount(symbol) - shareCount;
+   purchases_.push_back(PurchaseRecord(-shareCount, transactionDate));
 }
 
 unsigned int Portfolio::ShareCount(const string& symbol) const {
