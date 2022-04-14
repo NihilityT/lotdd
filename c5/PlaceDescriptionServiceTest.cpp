@@ -44,6 +44,8 @@ TEST_F(APlaceDescriptionService, FormatsRetrievedAddressIntoSummaryDescription) 
               "state":"CO",
               "country":"US" }})"));
    PlaceDescriptionService service(&httpStub);
+
    auto description = service.summaryDescription(ValidLatitude, ValidLongitude);
+
    ASSERT_THAT(description, Eq("Drury Ln, Fountain, CO, US"));
 }
