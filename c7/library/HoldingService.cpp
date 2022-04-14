@@ -28,7 +28,7 @@ void HoldingService::DeleteAll()
 
 unsigned int HoldingService::InventorySize() const
 {
-    return mCatalog.Size();
+   return mCatalog.Size();
 }
 
 void HoldingService::FindByClassification(const string& classification, set<Holding>& holdings) const
@@ -55,12 +55,12 @@ bool HoldingService::FindByBarCode(Holding& holding) const
 
 void HoldingService::AddAtBranch(const string& id, const string& barcode) 
 {
-    Branch branch(id);
-    mBranchService.Find(branch);
+   Branch branch(id);
+   mBranchService.Find(branch);
 
-    Holding holding(barcode);
-    holding.Transfer(branch);
-    mCatalog.Add(holding);
+   Holding holding(barcode);
+   holding.Transfer(branch);
+   mCatalog.Add(holding);
 }
 
 void HoldingService::Transfer(Holding& holding, Branch& branch)
@@ -71,13 +71,13 @@ void HoldingService::Transfer(Holding& holding, Branch& branch)
 
 void HoldingService::Transfer(const string& barCode, const string& branchId)
 {
-    Branch branch(branchId);
-    mBranchService.Find(branch);
+   Branch branch(branchId);
+   mBranchService.Find(branch);
 
-    Holding holding(barCode);
-    FindByBarCode(holding);
-    holding.Transfer(branch);
-    mCatalog.Update(holding);
+   Holding holding(barCode);
+   FindByBarCode(holding);
+   holding.Transfer(branch);
+   mCatalog.Update(holding);
 }
 
 void HoldingService::CheckOut(const string& patronCardNumber, const string& barCode, date date)
@@ -88,10 +88,10 @@ void HoldingService::CheckOut(const string& patronCardNumber, const string& barC
    mCatalog.Update(holding);
 
    Patron patron("", patronCardNumber);
-    mPatronService.Find(patron);
+   mPatronService.Find(patron);
 
-    patron.Borrow(holding);
-    mPatronService.Update(patron);
+   patron.Borrow(holding);
+   mPatronService.Update(patron);
 }
 
 void HoldingService::CheckIn(

@@ -23,11 +23,11 @@ class Branch;
 class Patron;
 
 namespace service {
-class HoldingService
+class HoldingServiceImpl
 {
 public:
-   HoldingService();
-   virtual ~HoldingService();
+   HoldingServiceImpl() {}
+   virtual ~HoldingServiceImpl() {}
 
    static void DeleteAll();
 
@@ -48,16 +48,15 @@ public:
          const std::string& classification, std::set<Holding>& holdings) const;
 
 private:
-   HoldingService(const HoldingService&);
-   HoldingService& operator=(const HoldingService&);
-
    Patron FindPatron(Holding&);
    bool IsLate(Holding&, boost::gregorian::date& checkinDate);
    void ApplyFine(Patron&, Holding&);
    unsigned int CalculateDaysPastDue(Holding& holding);
+   void NewPrivateMethod();
 
    PatronService mPatronService;
    BranchService mBranchService;
    Catalog mCatalog;
 };
 }
+
