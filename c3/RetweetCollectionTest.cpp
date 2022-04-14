@@ -35,7 +35,7 @@ TEST_F(ARetweetCollection, HasSizeOfOneAfterTweetAdded) {
    ASSERT_THAT(collection.size(), Eq(1u));
 }
 
-TEST_F(ARetweetCollection, DecreasesSizeAfterRemovingTweet) {
+TEST_F(ARetweetCollection, DISABLED_DecreasesSizeAfterRemovingTweet) {
    collection.add(Tweet());
    
    collection.remove(Tweet());
@@ -55,3 +55,24 @@ TEST_F(ARetweetCollection, IsNotEmptyWhenItsSizeIsNonZero) {
 
    ASSERT_FALSE(collection.isEmpty());
 }
+
+TEST_F(ARetweetCollection, IncrementsSizeWhenTweetAdded) {
+   Tweet first("msg1", "@user");
+   collection.add(first);
+   Tweet second("msg2", "@user");
+
+   collection.add(second);
+
+   ASSERT_THAT(collection.size(), Eq(2u));
+}
+
+TEST_F(ARetweetCollection, IgnoresDuplicateTweetAdded) {
+   Tweet tweet("msg", "@user");
+   Tweet duplicate(tweet);
+   collection.add(tweet);
+
+   collection.add(duplicate);
+
+   ASSERT_THAT(collection.size(), Eq(1u));
+}
+
