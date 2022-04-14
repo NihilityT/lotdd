@@ -33,10 +33,8 @@ public:
 TEST_F(APlaceDescriptionService, MakesHttpRequestToObtainAddress) {
    InSequence forceExpectationOrder;
    shared_ptr<HttpStub> httpStub{new HttpStub};
-
    string urlStart{
       "http://open.mapquestapi.com/nominatim/v1/reverse?format=json&"};
-	  
    auto expectedURL = urlStart + 
       "lat=" + APlaceDescriptionService::ValidLatitude + "&" +
       "lon=" + APlaceDescriptionService::ValidLongitude;
@@ -62,3 +60,4 @@ TEST_F(APlaceDescriptionService, FormatsRetrievedAddressIntoSummaryDescription) 
 
    ASSERT_THAT(description, Eq("Drury Ln, Fountain, CO, US"));
 }
+
