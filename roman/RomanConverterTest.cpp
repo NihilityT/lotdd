@@ -9,6 +9,8 @@ using namespace std;
 string convert(unsigned int arabic) 
 {
    const auto arabicToRomanConversions = {
+      make_pair(100u, "C"), 
+      make_pair(50u, "L"), 
       make_pair(10u, "X"), 
       make_pair(5u, "V"), 
       make_pair(1u, "I") };
@@ -33,4 +35,8 @@ TEST(RomanConverter, CanConvertPositiveDigits) {
    EXPECT_THAT(convert(12), Eq("XII"));
    EXPECT_THAT(convert(13), Eq("XIII"));
    EXPECT_THAT(convert(20), Eq("XX"));
+   EXPECT_THAT(convert(50), Eq("L"));
+   EXPECT_THAT(convert(80), Eq("LXXX"));
+   EXPECT_THAT(convert(100), Eq("C"));
+   EXPECT_THAT(convert(288), Eq("CCLXXXVIII"));
 }
