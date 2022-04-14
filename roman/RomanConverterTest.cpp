@@ -11,8 +11,11 @@ string convert(unsigned int arabic)
       roman += "X";
       arabic -= 10;
    }
-   while (arabic-- > 0)
+   while (arabic >= 1)
+   {
       roman += "I";
+      arabic -= 1;
+   }
    return roman;
 }
 
