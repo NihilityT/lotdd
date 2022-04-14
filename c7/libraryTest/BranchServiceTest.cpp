@@ -50,6 +50,20 @@ TEST_F(BranchServiceTest, AddThrowsWhenNameNotUnique)
    ASSERT_THROW(service.Add("samename", ""), DuplicateBranchNameException);
 }
 
+class ABranchService: public BranchServiceTest
+{
+public:
+   void SetUp() {
+      BranchServiceTest::SetUp();
+      service.Add(*eastBranch);
+   }
+};
+
+TEST_F(ABranchService, ThrowsWhenDuplicateBranchAdded)
+{
+   ASSERT_THROW(service.Add("east", ""), DuplicateBranchNameException);
+}
+
 TEST_F(BranchServiceTest, CountInitiallyZero)
 {
     ASSERT_THAT(service.BranchCount(), Eq(0));
@@ -98,16 +112,12 @@ TEST_F(BranchServiceTest, FindRetrievesById)
     ASSERT_THAT(retrieved.Name(), Eq(eastBranch->Name()));
 }
 
-// test that adding a branch increments the count
 TEST_F(BranchServiceTest, AddBranchIncrementsCount)
 {
-   // first branch
-   service.Add(*eastBranch); // East
+   service.Add(*eastBranch); 
    ASSERT_THAT(service.BranchCount(), Eq(1));
-
-   // second branch
-   service.Add(*westBranch); // West
-   ASSERT_THAT(service.BranchCount(), Eq(2)); // count now 2
+   service.Add(*westBranch);
+   ASSERT_THAT(service.BranchCount(), Eq(2)); 
 }
 
 TEST_F(BranchServiceTest, PersistsAcrossServiceInstances)
