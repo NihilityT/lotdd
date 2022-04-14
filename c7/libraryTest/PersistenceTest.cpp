@@ -48,11 +48,13 @@ TEST_P(PersistenceTest, GetAnswersNullWhenNoMatchingEntries)
     ASSERT_THAT(persister->Get("1").get(), IsNull());
 };
 
+const string PersistenceTest::Id1("1");
+
 TEST_P(PersistenceTest, RetrievedItemIsNewInstance)
 {
-    persister->Add(*obj);
+    persister->Add(*objectWithId1);
 
-    ASSERT_FALSE(obj == persister->Get("1").get());
+    ASSERT_FALSE(objectWithId1 == persister->Get("1").get());
 }
 
 TEST_P(PersistenceTest, CanPersistMultipleObjects)
