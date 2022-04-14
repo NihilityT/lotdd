@@ -11,6 +11,7 @@
 
 #include <string>
 #include <fstream>
+#include <memory>
 #include <boost/filesystem.hpp>
 
 #include "WavDescriptor.h"
@@ -36,7 +37,11 @@ struct DataChunk {
 
 class WavReader {
 public:
-   WavReader(const std::string& source, const std::string& dest);
+   WavReader(
+         const std::string& source, 
+         const std::string& dest,
+         std::shared_ptr<WavDescriptor> descriptor=0);
+   // ...
    virtual ~WavReader();
    void open(const std::string& name, bool trace);
    void list(
@@ -45,8 +50,7 @@ public:
          std::vector<boost::filesystem::path>& found) const;
    void listAll() const;
    void publishSnippets();
-public:
-   // ...
+
    void writeSamples(std::ostream* out, char* data, 
          uint32_t startingSample, 
          uint32_t samplesToWrite, 
@@ -64,11 +68,8 @@ public:
          DataChunk& dataChunk,
          char* data);
 
-   uint32_t totalSeconds;
-
 private:
    rlog::StdioNode log{STDERR_FILENO};
-   WavDescriptor* descriptor_;
 
    void readAndWriteHeaders(
          const std::string& name,
@@ -88,6 +89,9 @@ private:
 
    std::string source_;
    std::string dest_;
+private:
+   // ...
+   std::shared_ptr<WavDescriptor> descriptor_;
 };
 
 #endif  
