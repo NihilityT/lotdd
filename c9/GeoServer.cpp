@@ -49,3 +49,4 @@ vector<User> GeoServer::usersInBox(
          users.push_back(User{each.first, each.second});
    return users;
 }
+

@@ -85,8 +85,10 @@ TEST_GROUP(AGeoServer_UsersInBox) {
       server.track(aUser);
       server.track(bUser);
       server.track(cUser);
+
       server.updateLocation(aUser, aUserLocation);
    }
+
    vector<string> UserNames(const vector<User>& users) {
       return Collect<User,string>(users, [](User each) { return each.name(); });
    }
@@ -104,11 +106,23 @@ TEST(AGeoServer_UsersInBox, AnswersUsersInSpecifiedRange) {
 TEST(AGeoServer_UsersInBox, AnswersOnlyUsersWithinSpecifiedRange) {
    server.updateLocation(
       bUser, Location{aUserLocation.go(Width / 2 + TenMeters, East)}); 
-	  
    server.updateLocation(
       cUser, Location{aUserLocation.go(Width / 2 - TenMeters, East)}); 
 
    auto users = server.usersInBox(aUser, Width, Height);
 
    CHECK_EQUAL(vector<string> { cUser }, UserNames(users));
+}
+
+TEST(AGeoServer_UsersInBox, HandlesLargeNumbersOfUsers) {
+   Location anotherLocation{aUserLocation.go(10, West)};
+   const unsigned int lots {500000};
+   for (unsigned int i{0}; i < lots; i++) {
+      string user{"user" + to_string(i)};
+      server.track(user);
+      server.updateLocation(user, anotherLocation);
+   }
+
+   auto users = server.usersInBox(aUser, Width, Height);
+   CHECK_EQUAL(lots, users.size());
 }
