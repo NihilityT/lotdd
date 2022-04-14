@@ -55,11 +55,13 @@ TEST(ATweet, CanBeCopyConstructed) {
 
 TEST(ATweet, RequiresUserToStartWithAtSign) {
    string invalidUser("notStartingWith@");
+
    ASSERT_ANY_THROW(Tweet tweet("msg", invalidUser));
 }
 
 TEST(ATweet, RequiresUserToStartWithAnAtSign) {
    string invalidUser("notStartingWith@");
+
    ASSERT_THROW(Tweet tweet("msg", invalidUser), InvalidUserException);
 }
 
@@ -70,4 +72,15 @@ TEST(ATweet, RequiresUserNameToStartWithAnAtSign) {
       FAIL();
    } 
    catch (const InvalidUserException& expected) {}
+}
+
+TEST(ATweet, RequiresUserNameToStartWithAtSign) {
+   string invalidUser("notStartingWith@");
+   try {
+      Tweet tweet("msg", invalidUser);
+      FAIL();
+   } 
+   catch (const InvalidUserException& expected) {
+      ASSERT_STREQ("notStartingWith@", expected.what());
+   }
 }
