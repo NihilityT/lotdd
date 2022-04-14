@@ -19,19 +19,17 @@ TEST_F(ARetweetCollection, IsEmptyWhenCreated) {
    ASSERT_TRUE(collection.isEmpty());
 }
 
-TEST_F(ARetweetCollection, IsNoLongerEmptyAfterTweetAdded) {
-   collection.add(Tweet());
-   
-   ASSERT_FALSE(collection.isEmpty());
-}
-
 TEST_F(ARetweetCollection, HasSizeZeroWhenCreated) {
    ASSERT_THAT(collection.size(), Eq(0u));
 }
 
+TEST_F(ARetweetCollection, IsNoLongerEmptyAfterTweetAdded) {
+   collection.add(Tweet());
+   ASSERT_FALSE(collection.isEmpty());
+}
+
 TEST_F(ARetweetCollection, HasSizeOfOneAfterTweetAdded) {
    collection.add(Tweet());
-
    ASSERT_THAT(collection.size(), Eq(1u));
 }
 
@@ -57,22 +55,20 @@ TEST_F(ARetweetCollection, IsNotEmptyWhenItsSizeIsNonZero) {
 }
 
 TEST_F(ARetweetCollection, IncrementsSizeWhenTweetAdded) {
+   unsigned int expectedTweetCount(2);
    Tweet first("msg1", "@user");
-   collection.add(first);
    Tweet second("msg2", "@user");
-
+   collection.add(first);
    collection.add(second);
-
-   ASSERT_THAT(collection.size(), Eq(2u));
+   unsigned int size = collection.size();
+   ASSERT_THAT(size, Eq(expectedTweetCount));
 }
 
 TEST_F(ARetweetCollection, IgnoresDuplicateTweetAdded) {
    Tweet tweet("msg", "@user");
    Tweet duplicate(tweet);
    collection.add(tweet);
-
    collection.add(duplicate);
-
    ASSERT_THAT(collection.size(), Eq(1u));
 }
 
