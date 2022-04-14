@@ -85,7 +85,7 @@ TEST_F(APortfolio, ReducesShareCountOfSymbolOnSell)  {
 }
 
 TEST_F(APortfolio, ThrowsWhenSellingMoreSharesThanPurchased) {
-   ASSERT_THROW(Sell(SAMSUNG, 1), InvalidSellException);
+   ASSERT_THROW(Sell(SAMSUNG, 1), InsufficientSharesException);
 }
 
 TEST_F(APortfolio, AnswersThePurchaseRecordForASinglePurchase) {
