@@ -13,6 +13,7 @@ string convert(unsigned int arabic)
       make_pair(50u, "L"), 
       make_pair(10u, "X"), 
       make_pair(5u, "V"), 
+      make_pair(4u, "IV"), 
       make_pair(1u, "I") };
 
    string roman{""};
@@ -29,6 +30,7 @@ TEST(RomanConverter, CanConvertPositiveDigits) {
    EXPECT_THAT(convert(1), Eq("I"));
    EXPECT_THAT(convert(2), Eq("II"));
    EXPECT_THAT(convert(3), Eq("III"));
+   EXPECT_THAT(convert(4), Eq("IV"));
    EXPECT_THAT(convert(5), Eq("V"));
    EXPECT_THAT(convert(10), Eq("X"));
    EXPECT_THAT(convert(11), Eq("XI"));
