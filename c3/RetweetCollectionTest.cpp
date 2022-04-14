@@ -40,7 +40,7 @@ class ARetweetCollectionWithOneTweet: public Test {
 public:
    RetweetCollection collection;
    void SetUp() override {
-      collection.add(Tweet());
+      collection.add(Tweet("msg", "@user"));
    }
 };
 
