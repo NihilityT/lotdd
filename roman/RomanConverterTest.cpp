@@ -6,7 +6,7 @@ using namespace std;
 string convert(unsigned int arabic) 
 {
    string roman{""};
-   if (arabic >= 10)
+   while (arabic >= 10)
    {
       roman += "X";
       arabic -= 10;
@@ -24,4 +24,5 @@ TEST(RomanConverter, CanConvertPositiveDigits) {
    EXPECT_THAT(convert(11), Eq("XI"));
    EXPECT_THAT(convert(12), Eq("XII"));
    EXPECT_THAT(convert(13), Eq("XIII"));
+   EXPECT_THAT(convert(20), Eq("XX"));
 }
