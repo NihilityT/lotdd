@@ -57,6 +57,11 @@ public:
    int fd;
    const char *line;
    unsigned len;
+void ASSERT_EQ_WITH_LENGTH(
+   const char* expected, const char* actual, unsigned length) {
+   ASSERT_EQ(length, strlen(actual));
+   ASSERT_STREQ(expected, actual);
+}
 };
 
 //namespace {
@@ -86,13 +91,13 @@ TEST_F(LineReaderTest, OneLineTerminated) {
 
   ASSERT_FALSE(reader.GetNextLine(&line, &len));
 }
+
+
 TEST_F(LineReaderTest, OneLine) {
   LineReader reader(WriteTemporaryFile("a"));
 
   ASSERT_TRUE(reader.GetNextLine(&line, &len));
-  ASSERT_EQ(len, (unsigned)1);
-  ASSERT_EQ(line[0], 'a');
-  ASSERT_EQ(line[1], 0);
+  ASSERT_EQ_WITH_LENGTH("a", line, len);
   reader.PopLine(len);
 
   ASSERT_FALSE(reader.GetNextLine(&line, &len));
