@@ -50,9 +50,9 @@ TEST_P(PersistenceTest, GetAnswersNullWhenNoMatchingEntries)
 
 TEST_P(PersistenceTest, RetrievedItemIsNewInstance)
 {
-    persister->Add(*objectWithId1);
+    persister->Add(*obj);
 
-    ASSERT_FALSE(objectWithId1 == persister->Get("1").get());
+    ASSERT_FALSE(obj == persister->Get("1").get());
 }
 
 TEST_P(PersistenceTest, CanPersistMultipleObjects)

@@ -318,7 +318,9 @@ TEST_F(AMovieHolding, AnswersDateDueWhenCheckedOut)
 {
    date checkoutDate(2013, Mar, 1);
    movie->CheckOut(checkoutDate);
+
    date due = movie->DueDate();
+
    ASSERT_THAT(due, Eq(checkoutDate + date_duration(Book::MOVIE_CHECKOUT_PERIOD)));
 }
 
