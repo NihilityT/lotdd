@@ -59,7 +59,6 @@ public:
    unsigned len;
 };
 
-
 //namespace {
 //typedef testing::Test LineReaderTest;
 //}
