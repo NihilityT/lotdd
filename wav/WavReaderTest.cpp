@@ -126,12 +126,9 @@ TEST(WavReader_WriteSnippet, SendsFileLengthAndTotalSecondsToDescriptor) {
    dataChunk.length = 8;
    formatSubchunk.bitsPerSample = TwoBytesWorthOfBits;
    formatSubchunk.samplesPerSecond = 1;
-   
    mock().expectOneCall("size").andReturnValue(ArbitraryFileSize);
-
    mock().expectOneCall("add")
       .withParameter("totalSeconds", 8 / 2 / 1)
-	  
       .withParameter("fileSize", ArbitraryFileSize);
 
    reader.writeSnippet("any", input, output, formatSubchunk, dataChunk, data);
