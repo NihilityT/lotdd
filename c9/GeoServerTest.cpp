@@ -15,11 +15,20 @@ using namespace std;
 using std::chrono::milliseconds;
 
 TEST_GROUP(AGeoServer) {
+   // ...
    GeoServer server;
 
    const string aUser{"auser"};
    const double LocationTolerance{0.005};
+
+   bool locationIsUnknown(const string& user) {
+      return false;
+   }
 };
+
+TEST(AGeoServer, AnswersUnknownLocationWhenUserNoLongerTracked) {
+   CHECK_TRUE(locationIsUnknown(aUser));
+}
 
 TEST(AGeoServer, TracksAUser) {
    server.track(aUser);
@@ -181,10 +190,12 @@ TEST_GROUP_BASE(AGeoServer_ScaleTests, GeoServerUsersInBoxTests) {
          CHECK_TRUE(wasExecuted_.wait_for(lock, time, [&] 
                   { return expectedCount == Count; }));
       }
+
       condition_variable wasExecuted_;
       unsigned int Count{0};
       mutex mutex_;
    };
+
    GeoServerCountingListener countingListener;
    shared_ptr<thread> t;
 
